@@ -77,7 +77,7 @@ export default function Logo() {
             lineHeight: 1,
           }}
         >
-          Karunagapally
+          CE Karunagapally
         </span>
       </div>
     </div>
