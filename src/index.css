@@ -1,0 +1,126 @@
+:root {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
+.bungee-inline-regular {
+  font-family: "Bungee Inline", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.micro-5-charted-regular {
+  font-family: "Micro 5 Charted", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.app-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #ffffff;
+  color: #000000;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.starfield {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.star {
+  position: absolute;
+  background-color: #000000;
+  border-radius: 50%;
+  will-change: left, top;
+}
+
+.star.square {
+  border-radius: 0;
+}
+
+.star.diamond {
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+
+.star-symbol {
+  position: absolute;
+  color: #000000;
+  user-select: none;
+  pointer-events: none;
+  line-height: 1;
+  will-change: left, top;
+}
+
+.dev-controls {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 20px;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
+  max-width: 90vw;
+}
+
+.dev-header {
+  width: 100%;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 2px;
+}
+
+.dev-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #333;
+  font-size: 12px;
+  min-width: 120px;
+}
+
+.dev-controls input[type="range"] {
+  width: 100%;
+  accent-color: #666;
+}
+
+.dev-controls select {
+  padding: 4px 8px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  background: white;
+  font-size: 12px;
+}
