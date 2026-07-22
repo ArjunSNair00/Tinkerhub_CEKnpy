@@ -1,8 +1,4 @@
-import { useState, useEffect } from "react";
 import Logo from "./components/Logo";
-// import Starfield from "./components/Starfield";
-// import type { StarShape } from "./components/Starfield";
-// import DevControls from "./components/DevControls";
 import Workingonit from "./components/workingonit";
 
 function App() {
