@@ -1,6 +1,14 @@
 :root {
-  background-color: #ffffff;
-  color: #000000;
+  --bg: #fafcfe;
+  --ink: #0a0a0a;
+  --ink-2: #16181c;
+  --muted: #6b7280;
+  --muted-2: #9aa1ac;
+  --line: #e4e8ee;
+  --line-2: #c7cdd6;
+  --hover: #f1f4f8;
+  --sans: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
 }
 
 html,
@@ -10,6 +18,7 @@ body {
   overflow: hidden;
   height: 100%;
   width: 100%;
+  font-family: var(--sans);
 }
 
 .bungee-inline-regular {
@@ -123,4 +132,202 @@ body {
   border-radius: 6px;
   background: white;
   font-size: 12px;
+}
+
+/* NAV */
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 300;
+  background: rgba(250, 252, 254, 0.86);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-in {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.nav-links a {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-2);
+  position: relative;
+  padding: 4px 0;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+}
+.nav-links a:not(.btn)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -2px;
+  height: 1.5px;
+  background: var(--ink);
+  transition: right 0.25s ease;
+}
+.nav-links a:not(.btn):hover::after,
+.nav-links a.active:not(.btn)::after {
+  right: 0;
+}
+.nav-links a.active:not(.btn) {
+  color: var(--ink);
+}
+.nav-toggle {
+  display: none;
+  width: 42px;
+  height: 38px;
+  border: 1.5px solid var(--ink);
+  background: #fff;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+.nav-toggle span {
+  width: 18px;
+  height: 2px;
+  background: var(--ink);
+  display: block;
+  transition: 0.25s;
+}
+.nav-toggle.open span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.nav-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+.nav-toggle.open span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* LOCKUP */
+.lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  color: var(--ink);
+  line-height: 1;
+  position: relative;
+  text-decoration: none;
+}
+.lockup .mark {
+  width: 30px;
+  height: auto;
+  flex: none;
+}
+.lk-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.lk-brand {
+  font-size: 18px;
+  letter-spacing: -0.01em;
+}
+.lk-brand b {
+  font-weight: 800;
+}
+.lk-brand span {
+  font-weight: 400;
+}
+.lk-place {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* LOGO TERMINAL TOOLTIP */
+.logo-term {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  width: 248px;
+  background: #fff;
+  border: 1.5px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: left;
+  padding: 10px 12px;
+  color: var(--ink-2);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+  z-index: 50;
+}
+.logo-term::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 18px;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-left: 1.5px solid var(--ink);
+  border-top: 1.5px solid var(--ink);
+  transform: rotate(45deg);
+}
+.logo-term .p {
+  color: var(--muted);
+}
+.has-term:hover .logo-term,
+.has-term:focus-within .logo-term {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* BUTTONS */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 13.5px;
+  letter-spacing: 0.02em;
+  padding: 12px 20px;
+  border: 1.5px solid var(--ink);
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, transform 0.18s;
+  border-radius: 0;
+  text-decoration: none;
+}
+.btn .ar {
+  transition: transform 0.2s;
+}
+.btn:hover .ar {
+  transform: translateX(3px);
+}
+.btn--solid {
+  background: var(--ink);
+  color: #fff;
+}
+.btn--solid:hover {
+  background: #fff;
+  color: var(--ink);
+}
+.btn--ghost {
+  background: transparent;
+}
+.btn--ghost:hover {
+  background: var(--ink);
+  color: #fff;
 }

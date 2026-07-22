@@ -1,4 +1,5 @@
 export default function Logo() {
+  const scale = 0.8;
   return (
     <div
       style={{
@@ -7,6 +8,7 @@ export default function Logo() {
         gap: "1.5rem",
         zIndex: 10,
         userSelect: "none",
+        transform: `scale(${scale})`,
       }}
     >
       {/* TinkerHub Icon */}
