@@ -3,7 +3,6 @@ import BootScreen from "../components/BootScreen";
 import Nature, { type NatureHandle } from "../components/Nature";
 import "./hero.css";
 import TinkerhubText from "../components/TinkerhubText";
-import TinkerhubText3d from "../components/TinkerhubText3d";
 import RigTool from "../components/rigTool";
 import Details from "../components/details";
 import CollegeIMG from "../components/collegeIMG";
@@ -346,7 +345,6 @@ export default function Hero() {
 
         <div className="wrap">
           <TinkerhubText />
-          {/* <TinkerhubText3d /> */}
           <div className="college-head-wrap reveal">
             <CollegeHead />
           </div>
