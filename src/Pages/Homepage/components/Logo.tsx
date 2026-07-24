@@ -1,5 +1,4 @@
-export default function Logo() {
-  const scale = 0.8;
+export default function Logo({ scale = 0.8 }) {
   return (
     <div
       style={{

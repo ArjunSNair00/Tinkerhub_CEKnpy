@@ -1,0 +1,66 @@
+.MainTreeSvg {
+  transition: filter 0.4s ease;
+}
+
+.MainTreeHover {
+  filter: grayscale(0%) brightness(120%) contrast(150%)
+    drop-shadow(0 0 20px rgb(255, 46, 116));
+  cursor: pointer;
+}
+
+/* ─── Tree sway: gentle wind animation ─── */
+.treeSway {
+  transform-origin: 50% 100%;
+  animation: treeSway 4.2s ease-in-out infinite;
+}
+
+.treeSwaySlow {
+  transform-origin: 50% 50%;
+  animation: treeStretch 6s ease-in-out infinite;
+}
+
+.treeSwayFast {
+  transform-origin: 50% 100%;
+  animation: treeSway 3.2s ease-in-out infinite;
+}
+
+@keyframes treeSway {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(0.35deg); }
+  50% { transform: rotate(-0.3deg); }
+  75% { transform: rotate(0.2deg); }
+}
+
+@keyframes treeStretch {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+/* ─── Cloud drift: smooth left → right ─── */
+.cloudDrift {
+  animation-name: driftRight;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+@keyframes driftRight {
+  0% {
+    /* -100vw moves it a full screen-width to the left (completely hidden) */
+    transform: translateX(-100vw);
+    opacity: 0;
+  }
+  6% {
+    opacity: 1; /* gentle fade-in */
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    /* 100vw moves it a full screen-width to the right (completely hidden) */
+    transform: translateX(100vw);
+    opacity: 0; /* gentle fade-out */
+  }
+}

@@ -1,0 +1,28 @@
+.mhTitle {
+  text-align: center;
+  margin-top: 7px;
+  line-height: 0.92;
+}
+.mhCaps {
+  display: inline-block;
+  font-family: var(--sans);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: clamp(11px, 2vw, 18px);
+  color: var(--ink-warm);
+  padding: 8px;
+  background: #ff0083;
+}
+.mhSerif {
+  display: inline-block;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(30px, 7.4vw, 72px);
+  color: white;
+  background: black;
+  letter-spacing: 0.005em;
+  margin-top: 1px;
+  padding: 8px;
+}

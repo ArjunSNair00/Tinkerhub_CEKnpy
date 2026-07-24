@@ -15,7 +15,7 @@ export default function Workingonit() {
       className="micro-5-charted-regular"
       style={{ fontSize: "10rem", zIndex: 10, transform: `scale(${scale})` }}
     >
-      Working on it{dots}
+      Comming soon{dots}
     </h1>
   );
 }

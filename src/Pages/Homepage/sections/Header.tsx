@@ -32,13 +32,14 @@ export default function Header() {
             <span className="lk-place">CE Karunagappally</span>
           </span>
           <span className="logo-term">
-            <span className="p">$</span> git status
+            <span>Hakuna Matata</span>
+            {/* <span className="p">$</span> git status
             <br />
             On branch <b>main</b>
             <br />
             nothing to commit,
             <br />
-            working tree clean
+            working tree clean */}
           </span>
         </a>
         <div className="nav-links" id="navLinks">

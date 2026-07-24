@@ -15,9 +15,8 @@ html,
 body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  height: 100%;
   width: 100%;
+  max-width: 100vw;
   font-family: var(--sans);
 }
 
@@ -34,19 +33,15 @@ body {
 }
 
 .app-container {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   width: 100vw;
   background-color: #ffffff;
   color: #000000;
-  overflow: hidden;
   margin: 0;
-  padding: 0;
+  padding: 64px 24px;
 }
 
 .starfield {
@@ -267,7 +262,9 @@ body {
   color: var(--ink-2);
   opacity: 0;
   transform: translateY(-6px);
-  transition: opacity 0.2s, transform 0.2s;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
   pointer-events: none;
   z-index: 50;
 }
@@ -306,7 +303,10 @@ body {
   background: #fff;
   color: var(--ink);
   cursor: pointer;
-  transition: background 0.18s, color 0.18s, transform 0.18s;
+  transition:
+    background 0.18s,
+    color 0.18s,
+    transform 0.18s;
   border-radius: 0;
   text-decoration: none;
 }
