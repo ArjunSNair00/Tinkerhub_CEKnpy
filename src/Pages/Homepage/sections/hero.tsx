@@ -22,7 +22,17 @@ import Cloud2 from "../components/cloud2.png";
 import Cloud3 from "../components/cloud3.png";
 import Cloud4 from "../components/cloud4.png";
 
-const PRELOAD_IMAGES = [Collegee, Sky, Dirt, Trees, MainTree, Cloud1, Cloud2, Cloud3, Cloud4];
+const PRELOAD_IMAGES = [
+  Collegee,
+  Sky,
+  Dirt,
+  Trees,
+  MainTree,
+  Cloud1,
+  Cloud2,
+  Cloud3,
+  Cloud4,
+];
 
 export default function Hero() {
   const NATURE_FIXED = false; // true = fixed in viewport, false = scrolls with page
@@ -192,7 +202,7 @@ export default function Hero() {
       el.classList.add("assembled");
       if (action === "hammer") {
         const hx = rect.left + rect.width / 2;
-        const hy = rect.top + 4;
+        const hy = rect.top - 8;
         showTool("hammer");
         placeTool("hammer", hx, hy - 22);
         void tools.hammer.offsetWidth;
@@ -338,7 +348,14 @@ export default function Hero() {
 
       <div className="hero" id="top">
         <CollegeIMG />
-        <div style={{ position: "absolute", inset: 0, zIndex: 6, pointerEvents: "none" }}>
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 6,
+            pointerEvents: "none",
+          }}
+        >
           <Details />
         </div>
         <SkyPlane />

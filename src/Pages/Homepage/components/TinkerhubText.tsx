@@ -3,7 +3,7 @@ export default function TinkerhubText() {
     <>
       <div className="hero-art" id="heroArt">
         <div className="wordmark-pos">
-          <div className="wordmark clip-reveal" id="heroWord">
+          <div className="wordmark clip-reveal asm" id="heroWord" data-asm="hammer">
             <div
               style={{
                 fontFamily: "Inter, sans-serif",

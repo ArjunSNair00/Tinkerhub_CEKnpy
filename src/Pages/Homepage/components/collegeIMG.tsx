@@ -29,7 +29,7 @@ export default function CollegeIMG() {
       id: Date.now() + i,
       cloudIdx: Math.floor(Math.random() * CLOUDS.length),
       createdAt: Date.now() - i * 15000,
-      startProgress: (i * 0.33),
+      startProgress: i * 0.33,
     })),
   );
 
