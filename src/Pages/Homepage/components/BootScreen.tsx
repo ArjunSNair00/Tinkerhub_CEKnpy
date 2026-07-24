@@ -12,15 +12,31 @@ const BOOT_LINES = [
 
 interface BootScreenProps {
   onComplete: () => void;
+  loadedCount?: number;
+  totalCount?: number;
 }
 
-export default function BootScreen({ onComplete }: BootScreenProps) {
+export default function BootScreen({
+  onComplete,
+  loadedCount = 0,
+  totalCount = 1,
+}: BootScreenProps) {
+  const barWidth = Math.min(
+    Math.round((loadedCount / Math.max(totalCount, 1)) * 100),
+    100,
+  );
   const bootRef = useRef<HTMLDivElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const pixelRef = useRef<HTMLSpanElement>(null);
 
   const stableOnComplete = useCallback(onComplete, []);
+
+  const countsRef = useRef({ loadedCount, totalCount });
+
+  useEffect(() => {
+    countsRef.current = { loadedCount, totalCount };
+  }, [loadedCount, totalCount]);
 
   useEffect(() => {
     const reduce = !!(
@@ -48,6 +64,12 @@ export default function BootScreen({ onComplete }: BootScreenProps) {
 
     function finishBoot() {
       if (bootDone) return;
+
+      if (countsRef.current.loadedCount < countsRef.current.totalCount) {
+        bootTimer = setTimeout(finishBoot, 200);
+        return;
+      }
+
       bootDone = true;
       if (bootTimer) {
         clearTimeout(bootTimer);
@@ -107,7 +129,6 @@ export default function BootScreen({ onComplete }: BootScreenProps) {
         ic.textContent = L.ic;
         div.appendChild(ic);
         log.appendChild(div);
-        bar.style.width = Math.round(((i + 1) / BOOT_LINES.length) * 100) + "%";
         typeBootLine(div, L.t, () => {
           i++;
           bootTimer = setTimeout(step, L.ok ? 260 : 150);
@@ -160,7 +181,7 @@ export default function BootScreen({ onComplete }: BootScreenProps) {
         <div className="bm-body" ref={logRef}></div>
       </div>
       <div className="boot-bar">
-        <i ref={barRef}></i>
+        <i ref={barRef} style={{ width: barWidth + "%" }}></i>
       </div>
       <button className="boot-skip">skip ⏎</button>
       <Logo scale={0.5} />

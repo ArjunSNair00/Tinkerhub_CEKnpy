@@ -12,11 +12,26 @@ import SkyPlane from "../components/SkyPlane";
 import ChaiMeter from "../components/ChaiMeter";
 import WhoWeAre from "../components/whoWeAre";
 
+// Images to preload before dismissing boot screen
+import Collegee from "../components/College.png";
+import Sky from "../components/Sky.png";
+import Dirt from "../components/dirt.png";
+import Trees from "../components/trees.png";
+import MainTree from "../components/mainTree.png";
+import Cloud1 from "../components/cloud1.png";
+import Cloud2 from "../components/cloud2.png";
+import Cloud3 from "../components/cloud3.png";
+import Cloud4 from "../components/cloud4.png";
+
+const PRELOAD_IMAGES = [Collegee, Sky, Dirt, Trees, MainTree, Cloud1, Cloud2, Cloud3, Cloud4];
+
 export default function Hero() {
   const NATURE_FIXED = false; // true = fixed in viewport, false = scrolls with page
-  const bootIsOn = false;
+  const bootIsOn = true;
+  const [bootDone, setBootDone] = useState(false);
+  const [loadedCount, setLoadedCount] = useState(0);
+  const totalResources = PRELOAD_IMAGES.length;
   const natureRef = useRef<NatureHandle>(null);
-  const [bootDone, setBootDone] = useState(!bootIsOn);
 
   const startAnimations = useCallback(() => {
     document.body.classList.add("ready");
@@ -274,6 +289,19 @@ export default function Hero() {
     if (bootDone) startAnimations();
   }, [bootDone, startAnimations]);
 
+  // Preload hero images — progress driven by actual loaded count
+  useEffect(() => {
+    let loaded = 0;
+    PRELOAD_IMAGES.forEach((src) => {
+      const img = new Image();
+      img.onload = img.onerror = () => {
+        loaded++;
+        setLoadedCount(loaded);
+      };
+      img.src = src;
+    });
+  }, []);
+
   // Nature particle interactions (burst on click, hover spawn)
   useEffect(() => {
     if (!bootDone) return;
@@ -301,13 +329,19 @@ export default function Hero() {
   return (
     <>
       {bootIsOn && !bootDone && (
-        <BootScreen onComplete={() => setBootDone(true)} />
+        <BootScreen
+          onComplete={() => setBootDone(true)}
+          loadedCount={loadedCount}
+          totalCount={totalResources}
+        />
       )}
       <RigTool />
 
       <div className="hero" id="top">
         <CollegeIMG />
-        <Details />
+        <div style={{ position: "absolute", inset: 0, zIndex: 6, pointerEvents: "none" }}>
+          <Details />
+        </div>
         <SkyPlane />
 
         <div className="wrap">

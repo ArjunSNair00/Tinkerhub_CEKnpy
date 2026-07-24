@@ -50,8 +50,8 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 html {
-  overflow: visible;
   overflow-x: hidden;
+  overflow-y: auto;
   -webkit-text-size-adjust: 100%;
 }
 body {
@@ -1225,7 +1225,7 @@ body.ready .hero-bp text {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: min(92vw, 1140px);
+  width: 100%;
   z-index: 1;
 }
 .wordmark {
@@ -1303,7 +1303,9 @@ body.ready .hero-bp text {
   height: 22px;
   fill: #fff;
 }
+/* kollam*/
 .hero-art .corner-box .cb-txt {
+  right: 49px;
   position: absolute;
   font-family: var(--pixel);
   font-size: 7.5px;
@@ -1311,9 +1313,11 @@ body.ready .hero-bp text {
   letter-spacing: 0.1em;
   white-space: nowrap;
 }
+
+/* tinkerhub ce karunagappally logo */
 .hero-art .corner-box.tl {
   top: 2px;
-  left: 2px;
+  left: 0%;
 }
 .hero-art .corner-box.br {
   bottom: 2px;
@@ -1325,7 +1329,8 @@ body.ready .hero-bp text {
 }
 .hero-art .corner-box.br .cb-txt {
   bottom: 50px;
-  right: 0;
+  right: 1px;
+  top: -20px;
   text-align: right;
 }
 
@@ -1623,7 +1628,11 @@ body.ready .hero-bp text {
   gap: 5px;
   z-index: 999;
   color: rgba(255, 255, 255, 0.84);
-  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    sans-serif;
   user-select: none;
 }
 

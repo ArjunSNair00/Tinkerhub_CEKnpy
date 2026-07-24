@@ -24,18 +24,18 @@ export default function CollegeIMG() {
   const treeRef = useRef<HTMLImageElement>(null);
   const [popPos, setPopPos] = useState({ x: 0, y: 0 });
   const [popShow, setPopShow] = useState(false);
-  const [clouds, setClouds] = useState<CloudInstance[]>(() => [
-    {
-      id: Date.now(),
+  const [clouds, setClouds] = useState<CloudInstance[]>(() =>
+    Array.from({ length: 3 }, (_, i) => ({
+      id: Date.now() + i,
       cloudIdx: Math.floor(Math.random() * CLOUDS.length),
-      createdAt: Date.now(),
-      startProgress: 0,
-    },
-  ]);
+      createdAt: Date.now() - i * 15000,
+      startProgress: (i * 0.33),
+    })),
+  );
 
   useEffect(() => {
     const CYCLE = 45000;
-    const SPAWN_CHANCE = 0.4;
+    const SPAWN_CHANCE = 0.7;
     const spawnedRef = new Set<number>();
     let nextId = Date.now() + 1;
 
