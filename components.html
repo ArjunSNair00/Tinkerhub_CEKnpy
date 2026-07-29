@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TinkerHub // Interactive Neo-Brutalist Timeline</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Space Grotesk & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;800&family=Space+Grotesk:wght@500;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Space Grotesk"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    boxShadow: {
+                        'brutal': '5px 5px 0px 0px #000000',
+                        'brutal-lg': '8px 8px 0px 0px #000000',
+                        'brutal-sm': '3px 3px 0px 0px #000000',
+                        'brutal-hover': '2px 2px 0px 0px #000000',
+                    },
+                    colors: {
+                        'brutal-yellow': '#FFE600',
+                        'brutal-pink': '#FF5964',
+                        'brutal-blue': '#35A7FF',
+                        'brutal-green': '#38E54D',
+                        'brutal-purple': '#BF5AF2',
+                        'brutal-orange': '#FF9F0A',
+                        'brutal-bg': '#FFFBF0',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FFFBF0;
+            background-image: radial-gradient(#000000 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Brutalist custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFE600;
+            border-left: 3px solid #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #000;
+            border: 2px solid #FFE600;
+        }
+
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Neo-brutalist press effect */
+        .btn-brutal {
+            transition: all 0.1s ease-in-out;
+        }
+        .btn-brutal:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 7px 7px 0px 0px #000;
+        }
+        .btn-brutal:active {
+            transform: translate(3px, 3px);
+            box-shadow: 2px 2px 0px 0px #000;
+        }
+    </style>
+</head>
+<body class="text-black font-sans min-h-screen flex flex-col selection:bg-brutal-pink selection:text-white pb-16">
+
+    <!-- Top Announcement Marquee -->
+    <div class="bg-black text-brutal-yellow border-b-4 border-black py-2 font-mono font-bold text-sm tracking-wider uppercase marquee-container z-50 sticky top-0">
+        <div class="marquee-content flex gap-8 items-center">
+            <span>🚀 TINKERHUB TIMELINE ARCHIVE</span>
+            <span>★</span>
+            <span>BUILDING TECH CULTURE SINCE 2016</span>
+            <span>★</span>
+            <span>50,000+ LEARNERS IMPACTED</span>
+            <span>★</span>
+            <span>100+ CAMPUS CHAPTERS</span>
+            <span>★</span>
+            <span>OPEN SOURCE & COMMUNITY DRIVEN</span>
+            <span>★</span>
+            <span>🚀 TINKERHUB TIMELINE ARCHIVE</span>
+            <span>★</span>
+            <span>BUILDING TECH CULTURE SINCE 2016</span>
+            <span>★</span>
+            <span>50,000+ LEARNERS IMPACTED</span>
+            <span>★</span>
+            <span>100+ CAMPUS CHAPTERS</span>
+            <span>★</span>
+        </div>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header class="max-w-6xl w-full mx-auto px-4 pt-8 pb-4">
+        <div class="bg-brutal-yellow border-4 border-black shadow-brutal p-6 md:p-8 rounded-none relative overflow-hidden">
+            <!-- Decorative corner badge -->
+            <div class="absolute -top-3 -right-3 bg-brutal-pink text-white font-mono font-black text-xs px-4 py-2 border-2 border-black rotate-12 uppercase shadow-brutal-sm">
+                VER 2.0 // ARCHIVE
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="bg-black text-white px-3 py-1 font-mono text-xs font-bold uppercase tracking-widest border border-black">
+                            TinkerHub Foundation
+                        </span>
+                        <span class="bg-brutal-green font-mono text-xs font-bold px-2 py-1 border-2 border-black shadow-[2px_2px_0px_0px_#000]">
+                            ● LIVE ARCHIVE
+                        </span>
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-black uppercase tracking-tight leading-none">
+                        TinkerHub <span class="bg-brutal-pink text-white px-2 border-2 border-black inline-block -rotate-1">Journey</span>
+                    </h1>
+                    <p class="mt-3 font-mono text-sm md:text-base font-semibold max-w-2xl bg-white p-2 border-2 border-black shadow-brutal-sm">
+                        A timeline of how a small group of passionate tech enthusiasts built Kerala's largest peer-to-peer learning ecosystem.
+                    </p>
+                </div>
+
+                <!-- Action Button Group -->
+                <div class="flex flex-wrap gap-3">
+                    <button id="addMemoryBtn" class="btn-brutal bg-brutal-blue text-black font-bold px-4 py-3 border-4 border-black shadow-brutal flex items-center gap-2 text-sm uppercase">
+                        <i class="fa-solid fa-plus text-base"></i> Add Memory
+                    </button>
+                    <button id="themeToggleBtn" class="btn-brutal bg-white text-black font-bold p-3 border-4 border-black shadow-brutal text-sm" title="Toggle Theme Palette">
+                        <i class="fa-solid fa-palette text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8 pt-6 border-t-4 border-black">
+                <div class="bg-white p-3 border-2 border-black shadow-brutal-sm text-center">
+                    <div class="font-black text-2xl md:text-3xl text-black">2016</div>
+                    <div class="font-mono text-xs font-bold uppercase text-gray-700">Founded</div>
+                </div>
+                <div class="bg-brutal-green p-3 border-2 border-black shadow-brutal-sm text-center">
+                    <div class="font-black text-2xl md:text-3xl text-black">100+</div>
+                    <div class="font-mono text-xs font-bold uppercase text-black">Campuses</div>
+                </div>
+                <div class="bg-brutal-purple text-white p-3 border-2 border-black shadow-brutal-sm text-center">
+                    <div class="font-black text-2xl md:text-3xl">50K+</div>
+                    <div class="font-mono text-xs font-bold uppercase">Tinkerers</div>
+                </div>
+                <div class="bg-brutal-orange p-3 border-2 border-black shadow-brutal-sm text-center">
+                    <div class="font-black text-2xl md:text-3xl text-black">15+</div>
+                    <div class="font-mono text-xs font-bold uppercase text-black">Flagship Initiatives</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Controls Section: Search, Filters & View Toggle -->
+    <section class="max-w-6xl w-full mx-auto px-4 my-6">
+        <div class="bg-white border-4 border-black p-4 md:p-6 shadow-brutal flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
+            
+            <!-- Search Bar -->
+            <div class="relative flex-1">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fa-solid fa-magnifying-glass text-black text-lg"></i>
+                </div>
+                <input type="text" id="searchInput" placeholder="SEARCH MILESTONES (E.G. 'TINKERSPACE', 'BOOTCAMP', '2020')..." 
+                    class="w-full pl-10 pr-4 py-3 bg-brutal-bg border-3 border-black text-sm font-mono font-bold focus:outline-none focus:bg-yellow-100 transition border-2 border-black shadow-brutal-sm">
+            </div>
+
+            <!-- View Switcher -->
+            <div class="flex items-center gap-2 border-2 border-black p-1 bg-gray-100 self-start md:self-auto">
+                <button id="viewTimelineBtn" class="px-3 py-2 text-xs font-bold font-mono uppercase bg-black text-white border border-black shadow-brutal-sm flex items-center gap-2">
+                    <i class="fa-solid fa-timeline"></i> Timeline
+                </button>
+                <button id="viewGridBtn" class="px-3 py-2 text-xs font-bold font-mono uppercase bg-white text-black hover:bg-gray-200 border border-black flex items-center gap-2">
+                    <i class="fa-solid fa-grip"></i> Grid
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter Pills -->
+        <div class="flex flex-wrap gap-2 mt-4" id="categoryFilters">
+            <!-- Dynamically populated / interactive category pills -->
+            <button data-category="ALL" class="filter-btn active bg-black text-white font-mono font-bold text-xs uppercase px-4 py-2 border-2 border-black shadow-brutal-sm btn-brutal">
+                ⚡ ALL (10)
+            </button>
+            <button data-category="FOUNDING" class="filter-btn bg-brutal-yellow text-black font-mono font-bold text-xs uppercase px-4 py-2 border-2 border-black shadow-brutal-sm btn-brutal">
+                🏁 FOUNDING
+            </button>
+            <button data-category="CAMPUS" class="filter-btn bg-brutal-green text-black font-mono font-bold text-xs uppercase px-4 py-2 border-2 border-black shadow-brutal-sm btn-brutal">
+                🏫 CAMPUS
+            </button>
+            <button data-category="PROGRAMS" class="filter-btn bg-brutal-blue text-black font-mono font-bold text-xs uppercase px-4 py-2 border-2 border-black shadow-brutal-sm btn-brutal">
+                💡 PROGRAMS
+            </button>
+            <button data-category="SPACES" class="filter-btn bg-brutal-pink text-white font-mono font-bold text-xs uppercase px-4 py-2 border-2 border-black shadow-brutal-sm btn-brutal">
+                🏢 SPACES & INNOVATION
+            </button>
+        </div>
+    </section>
+
+    <!-- Main Timeline Container -->
+    <main class="max-w-6xl w-full mx-auto px-4 flex-1 my-4">
+        
+        <!-- Timeline View Wrapper -->
+        <div id="timelineContainer" class="relative">
+            <!-- Central Line (Desktop) -->
+            <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-2 bg-black z-0"></div>
+            
+            <!-- Mobile Left Line -->
+            <div class="block md:hidden absolute left-6 top-0 bottom-0 w-2 bg-black z-0"></div>
+
+            <!-- Timeline Cards List -->
+            <div id="timelineList" class="space-y-8 relative z-10">
+                <!-- Rendered dynamically via JavaScript -->
+            </div>
+        </div>
+
+        <!-- Empty State Container -->
+        <div id="emptyState" class="hidden bg-brutal-yellow border-4 border-black p-8 text-center shadow-brutal my-8">
+            <div class="text-5xl mb-4">🔍</div>
+            <h3 class="text-2xl font-black uppercase mb-2">NO MILESTONES FOUND!</h3>
+            <p class="font-mono text-sm mb-4">Try searching for something else or clear your category filters.</p>
+            <button id="resetFiltersBtn" class="btn-brutal bg-black text-white font-mono font-bold text-xs uppercase px-6 py-3 border-2 border-black">
+                Reset All Filters
+            </button>
+        </div>
+    </main>
+
+    <!-- Modal: Detail View -->
+    <div id="detailModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white border-4 border-black shadow-brutal-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto relative animate-in fade-in zoom-in duration-200">
+            <!-- Modal Header -->
+            <div class="bg-brutal-yellow p-4 border-b-4 border-black flex justify-between items-center sticky top-0 z-10">
+                <div class="flex items-center gap-2">
+                    <span id="modalYear" class="bg-black text-white font-mono font-black text-sm px-3 py-1 border border-black">2021</span>
+                    <span id="modalCategory" class="bg-brutal-pink text-white font-mono font-bold text-xs px-2 py-1 border border-black uppercase">CAMPUS</span>
+                </div>
+                <button id="closeDetailModal" class="bg-black text-white w-8 h-8 font-mono font-black border-2 border-black hover:bg-red-600 flex items-center justify-center text-lg">
+                    &times;
+                </button>
+            </div>
+            <!-- Modal Content -->
+            <div class="p-6">
+                <h2 id="modalTitle" class="text-2xl md:text-3xl font-black uppercase mb-4 leading-tight"></h2>
+                
+                <div id="modalImageContainer" class="mb-4 hidden border-3 border-black shadow-brutal-sm overflow-hidden">
+                    <img id="modalImage" src="" alt="Milestone Image" class="w-full h-64 object-cover">
+                </div>
+
+                <p id="modalDescription" class="font-mono text-sm md:text-base leading-relaxed bg-brutal-bg p-4 border-2 border-black mb-6"></p>
+
+                <!-- Impact Highlights -->
+                <div class="bg-brutal-blue/20 p-4 border-2 border-black mb-6">
+                    <h4 class="font-black text-sm uppercase mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-bullseye text-brutal-pink"></i> Key Impact & Takeaways
+                    </h4>
+                    <ul id="modalImpactList" class="list-disc list-inside font-mono text-xs space-y-1">
+                        <!-- Populated dynamically -->
+                    </ul>
+                </div>
+
+                <div class="flex justify-between items-center border-t-2 border-black pt-4">
+                    <button id="modalUpvoteBtn" class="btn-brutal bg-brutal-green font-mono font-bold text-xs uppercase px-4 py-2 border-2 border-black flex items-center gap-2">
+                        <i class="fa-solid fa-heart text-red-600"></i> <span id="modalUpvoteCount">0</span> Likes
+                    </button>
+                    <button id="closeDetailModalBtn" class="btn-brutal bg-black text-white font-mono font-bold text-xs uppercase px-4 py-2 border-2 border-black">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add Community Memory -->
+    <div id="addModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white border-4 border-black shadow-brutal-lg max-w-lg w-full relative">
+            <div class="bg-brutal-blue p-4 border-b-4 border-black flex justify-between items-center">
+                <h3 class="font-black text-lg uppercase flex items-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Milestone / Memory
+                </h3>
+                <button id="closeAddModal" class="bg-black text-white w-8 h-8 font-mono font-black border-2 border-black hover:bg-red-600 flex items-center justify-center text-lg">
+                    &times;
+                </button>
+            </div>
+            
+            <form id="addMemoryForm" class="p-6 space-y-4">
+                <div>
+                    <label class="block font-mono text-xs font-bold uppercase mb-1">Year</label>
+                    <input type="number" id="formYear" min="2016" max="2026" value="2024" required 
+                        class="w-full p-2 bg-brutal-bg border-2 border-black font-mono font-bold text-sm focus:outline-none focus:bg-yellow-100">
+                </div>
+
+                <div>
+                    <label class="block font-mono text-xs font-bold uppercase mb-1">Category</label>
+                    <select id="formCategory" class="w-full p-2 bg-brutal-bg border-2 border-black font-mono font-bold text-sm focus:outline-none focus:bg-yellow-100">
+                        <option value="FOUNDING">FOUNDING</option>
+                        <option value="CAMPUS">CAMPUS</option>
+                        <option value="PROGRAMS" selected>PROGRAMS</option>
+                        <option value="SPACES">SPACES & INNOVATION</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-mono text-xs font-bold uppercase mb-1">Milestone Title</label>
+                    <input type="text" id="formTitle" placeholder="E.g., Organized State-level Hackathon" required 
+                        class="w-full p-2 bg-brutal-bg border-2 border-black font-mono font-bold text-sm focus:outline-none focus:bg-yellow-100">
+                </div>
+
+                <div>
+                    <label class="block font-mono text-xs font-bold uppercase mb-1">Description</label>
+                    <textarea id="formDescription" rows="3" placeholder="Describe what happened and why it mattered..." required
+                        class="w-full p-2 bg-brutal-bg border-2 border-black font-mono font-bold text-sm focus:outline-none focus:bg-yellow-100"></textarea>
+                </div>
+
+                <div>
+                    <label class="block font-mono text-xs font-bold uppercase mb-1">Impact Highlight (Optional)</label>
+                    <input type="text" id="formImpact" placeholder="E.g., 500+ attendees, 30 projects built" 
+                        class="w-full p-2 bg-brutal-bg border-2 border-black font-mono font-bold text-sm focus:outline-none focus:bg-yellow-100">
+                </div>
+
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" id="cancelAddModal" class="btn-brutal bg-gray-200 text-black font-mono font-bold text-xs uppercase px-4 py-2 border-2 border-black">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn-brutal bg-brutal-green text-black font-mono font-bold text-xs uppercase px-6 py-2 border-2 border-black">
+                        🚀 Add To Timeline
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="max-w-6xl w-full mx-auto px-4 mt-12">
+        <div class="bg-black text-white border-4 border-black p-6 md:p-8 shadow-brutal flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <h3 class="text-2xl font-black uppercase text-brutal-yellow mb-2">JOIN THE TINKERHUB MOVEMENT</h3>
+                <p class="font-mono text-xs md:text-sm text-gray-300 max-w-xl">
+                    TinkerHub is a non-profit initiative aimed at making tech education accessible, inclusive, and fun. Built by students, for students.
+                </p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <a href="https://tinkerhub.org" target="_blank" rel="noopener" class="btn-brutal bg-brutal-pink text-white font-mono font-bold text-xs uppercase px-4 py-3 border-2 border-white inline-flex items-center gap-2">
+                    Official Website <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+                <a href="https://github.com/tinkerhub" target="_blank" rel="noopener" class="btn-brutal bg-brutal-yellow text-black font-mono font-bold text-xs uppercase px-4 py-3 border-2 border-white inline-flex items-center gap-2">
+                    <i class="fa-brands fa-github text-sm"></i> GitHub
+                </a>
+            </div>
+        </div>
+        <div class="text-center font-mono text-xs text-gray-600 mt-4 font-bold">
+            HANDCRAFTED WITH 💛 FOR THE TINKERHUB COMMUNITY // NEO-BRUTALIST ARCHIVE
+        </div>
+    </footer>
+
+    <script>
+        // --- DATASET: TINKERHUB MILESTONES ---
+        let milestones = [
+            {
+                id: 'm1',
+                year: 2016,
+                title: 'The Spark & Genesis',
+                category: 'FOUNDING',
+                badgeBg: 'bg-brutal-yellow',
+                shortDesc: 'TinkerHub was born out of a small college hostel room to bridge the gap between academic curriculum and real-world tech skills.',
+                fullDesc: 'Founders Kurian Jacob and team realized engineering education lacked hands-on peer learning. TinkerHub started as an informal student meetup to learn coding, build projects, and collaborate without academic pressure.',
+                impact: [
+                    'Initial cohort of 30 enthusiastic student developers',
+                    'Established core philosophy: Learn by Doing & Peer Learning',
+                    'Organized first informal weekend hack nights'
+                ],
+                likes: 142,
+                image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+                id: 'm2',
+                year: 2018,
+                title: 'Official Non-Profit Registration',
+                category: 'FOUNDING',
+                badgeBg: 'bg-brutal-orange',
+                shortDesc: 'Formally registered as the TinkerHub Foundation, a non-profit educational entity.',
+                fullDesc: 'To scale its operations across universities and partner with industry mentors, TinkerHub officially registered as a non-profit foundation in Kerala, setting up governance structures driven by community members.',
+                impact: [
+                    'Registered as a Section 8 Non-Profit organization',
+                    'Inducted industry veterans as advisory board members',
+                    'Standardized the Campus Chapter playbook'
+                ],
+                likes: 98,
+                image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+                id: 'm3',
+                year: 2019,
+                title: 'Campus Chapters Expansion (50+ Colleges)',
+                category: 'CAMPUS',
+                badgeBg: 'bg-brutal-green',
+                shortDesc: 'Launched student-led TinkerHub chapters across 50+ engineering and arts colleges.',
+                fullDesc: 'Campus Chapters empowered students to become "Campus Enablers". Each chapter organized local study jams, tech talks, and open-source orientation sessions on their campuses.',
+                impact: [
+                    '50+ active campus communities established',
+                    '100+ student leaders trained as Learning Enablers',
+                    'First state-wide Campus Enabler Summit hosted'
+                ],
+                likes: 215,
+                image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+                id: 'm4',
+                year: 2020,
+                title: 'Pandemic Shift: Virtual Peer Learning Tracks',
+                category: 'PROGRAMS',
+                badgeBg: 'bg-brutal-blue',
+                shortDesc: 'Pivoted to online cohorts during lockdowns, launching "CoCode" & "Maker Saturdays".',
+                fullDesc: 'When colleges closed during the COVID-19 pandemic, TinkerHub launched massive online Discord cohorts, open-source sprints, and self-paced learning paths reaching thousands of students stuck at home.',
+                impact: [
+                    '10,000+ Discord community members joined',
+                    'Over 500+ open-source contributions during Hacktoberfest',
+                    'Launched daily mentor office hours on voice channels'
+                ],
+                likes: 310,
+                image: 'https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+                id: 'm5',
+                year: 2021,
+                title: 'Opening of "TinkerSpace" Physical Maker Hub',
+                category: 'SPACES',
+                badgeBg: 'bg-brutal-pink',
+                shortDesc: 'Unveiled TinkerSpace in Kalamassery, Kochi — a physical physical community lab for makers.',
+                fullDesc: 'TinkerSpace was conceived as a 24/7 open community hub where developers, designers, hardware enthusiasts, and founders can walk in, use high-speed internet, collaborate, and build hardware & software projects for free.',
+                impact: [
+                    'First physical open community space in the region',
+                    'Hosted 100+ offline meetups and hardware workshops',
+                    'Provided free co-working space for student startups'
+                ],
+                likes: 420,
+                image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+                id: 'm6',
+                year: 2022,
+                title: 'Launch of TinkerHer & Diversity Initiatives',
+                category: 'PROGRAMS',
+                badgeBg: 'bg-brutal-purple',
+                shortDesc: 'Dedicated bootcamps and mentorship cohorts to increase female participation in tech.',
+                fullDesc: 'Recognizing gender disparity in technology programs, TinkerHub launched specialized tracks like TinkerHer, providing targeted mentoring, female role model sessions, and safe learning spaces.',
+                impact: [
+                    '45% female participation rate achieved across all programs',
+                    '300+ women guided into tech careers & internships',
+                    'Partnership with global women-in-tech advocacy groups'
+                ],
+                likes: 275,
+                image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+                id: 'm7',
+                year: 2023,
+                title: 'Learning Paths & Peer Mentorship Platform',
+                category: 'PROGRAMS',
+                badgeBg: 'bg-brutal-yellow',
+                shortDesc: 'Rolled out structured skill bootcamps covering Web3, AI/ML, Flutter, and DevOps.',
+                fullDesc: 'Structured learning roadmaps paired learners with vetted peer mentors. Students built real-world projects, received peer code reviews, and earned verifiable digital credentials.',
+                impact: [
+                    '15,000+ active learners across 5 major technical learning tracks',
+                    '80%+ project completion rate in mentored cohorts',
+                    'Direct hiring pipeline established with 30+ regional tech companies'
+                ],
+                likes: 380,
+                image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+                id: 'm8',
+                year: 2024,
+                title: '100+ Active Campuses & State-wide Hackathons',
+                category: 'CAMPUS',
+                badgeBg: 'bg-brutal-green',
+                shortDesc: 'Reached the milestone of 100 active campus chapters and organized massive hackathons.',
+                fullDesc: 'With over a hundred colleges in the network, TinkerHub organized state-wide hackathons and community summits, solidifying its position as the premier grass-roots tech movement.',
+                impact: [
+                    '100+ active campus chapters across South India',
+                    'Over $10,000 in project grants awarded to student makers',
+                    '50,000+ total cumulative student impact count reached'
+                ],
+                likes: 512,
+                image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+                id: 'm9',
+                year: 2025,
+                title: 'AI & Next-Gen Skill Cohorts',
+                category: 'PROGRAMS',
+                badgeBg: 'bg-brutal-blue',
+                shortDesc: 'Pioneered AI engineering, open LLM fine-tuning, and robotics labs for college students.',
+                fullDesc: 'Adapting to the generative AI revolution, TinkerHub launched hands-on AI engineering labs, teaching students open-source AI frameworks, local model deployment, and ethical AI development.',
+                impact: [
+                    'Launched 10+ AI specialization bootcamps',
+                    'Created open-source datasets for regional languages',
+                    '2,000+ students built functional AI prototypes'
+                ],
+                likes: 290,
+                image: 'https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+                id: 'm10',
+                year: 2026,
+                title: 'Decentralized Community Hubs & Beyond',
+                category: 'SPACES',
+                badgeBg: 'bg-brutal-orange',
+                shortDesc: 'Expanding the TinkerSpace concept into regional rural learning centers.',
+                fullDesc: 'Taking the success of Kochi’s TinkerSpace to tier-2 and tier-3 towns, TinkerHub establishes mini community hubs to democratize high-end tech infrastructure across all districts.',
+                impact: [
+                    '5 regional mini-TinkerSpaces operational',
+                    'Global mentor network spanning 15+ countries',
+                    'Sustained community endowment fund launched'
+                ],
+                likes: 198,
+                image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80'
+            }
+        ];
+
+        // --- APP STATE ---
+        let currentFilter = 'ALL';
+        let searchQuery = '';
+        let currentView = 'timeline'; // 'timeline' or 'grid'
+
+        // --- DOM ELEMENTS ---
+        const timelineList = document.getElementById('timelineList');
+        const emptyState = document.getElementById('emptyState');
+        const searchInput = document.getElementById('searchInput');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const viewTimelineBtn = document.getElementById('viewTimelineBtn');
+        const viewGridBtn = document.getElementById('viewGridBtn');
+        const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+
+        // Modals
+        const detailModal = document.getElementById('detailModal');
+        const closeDetailModal = document.getElementById('closeDetailModal');
+        const closeDetailModalBtn = document.getElementById('closeDetailModalBtn');
+        const addModal = document.getElementById('addModal');
+        const addMemoryBtn = document.getElementById('addMemoryBtn');
+        const closeAddModal = document.getElementById('closeAddModal');
+        const cancelAddModal = document.getElementById('cancelAddModal');
+        const addMemoryForm = document.getElementById('addMemoryForm');
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+
+        // --- RENDER FUNCTION ---
+        function renderTimeline() {
+            // Filter logic
+            let filtered = milestones.filter(item => {
+                const matchesCategory = (currentFilter === 'ALL') || (item.category === currentFilter);
+                const query = searchQuery.toLowerCase().trim();
+                const matchesSearch = query === '' || 
+                    item.title.toLowerCase().includes(query) || 
+                    item.shortDesc.toLowerCase().includes(query) || 
+                    item.year.toString().includes(query) ||
+                    item.category.toLowerCase().includes(query);
+                return matchesCategory && matchesSearch;
+            });
+
+            // Handle empty state
+            if (filtered.length === 0) {
+                timelineList.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            // Grid vs Timeline view layout adjustments
+            if (currentView === 'grid') {
+                timelineList.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10';
+            } else {
+                timelineList.className = 'space-y-8 relative z-10';
+            }
+
+            // Render cards HTML
+            timelineList.innerHTML = filtered.map((item, index) => {
+                const isEven = index % 2 === 0;
+
+                if (currentView === 'grid') {
+                    // Grid Card Layout
+                    return `
+                        <div class="bg-white border-4 border-black p-5 shadow-brutal flex flex-col justify-between hover:-translate-y-1 transition duration-150">
+                            <div>
+                                <div class="flex items-center justify-between gap-2 mb-3">
+                                    <span class="bg-black text-white font-mono font-black text-xs px-3 py-1 border border-black">${item.year}</span>
+                                    <span class="${item.badgeBg} text-black font-mono font-bold text-[10px] px-2 py-0.5 border border-black uppercase">${item.category}</span>
+                                </div>
+                                <h3 class="text-xl font-black uppercase mb-2 leading-tight">${item.title}</h3>
+                                <p class="font-mono text-xs text-gray-800 leading-relaxed mb-4">${item.shortDesc}</p>
+                            </div>
+                            <div class="pt-3 border-t-2 border-black flex items-center justify-between">
+                                <button onclick="openDetail('${item.id}')" class="btn-brutal bg-brutal-yellow font-mono font-bold text-xs uppercase px-3 py-1.5 border-2 border-black">
+                                    Read More
+                                </button>
+                                <button onclick="likeMilestone('${item.id}', event)" class="font-mono font-bold text-xs bg-brutal-bg px-2 py-1 border border-black hover:bg-brutal-pink hover:text-white transition flex items-center gap-1">
+                                    ❤️ <span>${item.likes}</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Vertical Timeline Card Layout
+                return `
+                    <div class="flex flex-col md:flex-row items-center ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} gap-4 md:gap-8">
+                        
+                        <!-- Card Body -->
+                        <div class="w-full md:w-1/2 pl-12 md:pl-0">
+                            <div class="bg-white border-4 border-black p-5 md:p-6 shadow-brutal relative hover:-translate-y-1 transition duration-150">
+                                
+                                <!-- Mobile Node Marker -->
+                                <div class="md:hidden absolute -left-10 top-6 w-6 h-6 bg-brutal-yellow border-3 border-black rounded-full flex items-center justify-center font-black text-xs">
+                                    ●
+                                </div>
+
+                                <!-- Card Header -->
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="bg-black text-white font-mono font-black text-sm px-3 py-1 border border-black">${item.year}</span>
+                                        <span class="${item.badgeBg} font-mono font-bold text-xs px-2 py-1 border border-black uppercase text-black">${item.category}</span>
+                                    </div>
+                                    <span class="font-mono text-xs text-gray-500 font-bold">#${index + 1}</span>
+                                </div>
+
+                                <!-- Card Title & Text -->
+                                <h3 class="text-xl md:text-2xl font-black uppercase mb-2 leading-snug">${item.title}</h3>
+                                <p class="font-mono text-xs md:text-sm text-gray-800 leading-relaxed mb-4">${item.shortDesc}</p>
+
+                                <!-- Footer actions -->
+                                <div class="flex items-center justify-between pt-3 border-t-2 border-black">
+                                    <button onclick="openDetail('${item.id}')" class="btn-brutal bg-brutal-yellow font-mono font-bold text-xs uppercase px-4 py-2 border-2 border-black flex items-center gap-2">
+                                        View Details <i class="fa-solid fa-arrow-right text-xs"></i>
+                                    </button>
+                                    <button onclick="likeMilestone('${item.id}', event)" class="btn-brutal bg-white text-black font-mono font-bold text-xs px-3 py-1.5 border-2 border-black flex items-center gap-1.5 hover:bg-brutal-pink hover:text-white">
+                                        ❤️ <span>${item.likes}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Center Node Indicator (Desktop) -->
+                        <div class="hidden md:flex w-10 h-10 bg-brutal-yellow border-4 border-black rounded-none shadow-brutal-sm items-center justify-center font-black text-sm z-20 shrink-0 rotate-45">
+                            <span class="-rotate-45">${item.year.toString().substr(2)}</span>
+                        </div>
+
+                        <!-- Spacer for opposite side alignment -->
+                        <div class="hidden md:block w-1/2"></div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // --- EVENT HANDLERS ---
+
+        // Category Filter Switching
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-black', 'text-white');
+                    b.classList.add('bg-white', 'text-black');
+                });
+                btn.classList.remove('bg-white', 'text-black');
+                btn.classList.add('bg-black', 'text-white');
+
+                currentFilter = btn.dataset.category;
+                renderTimeline();
+            });
+        });
+
+        // Search Input Handling
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderTimeline();
+        });
+
+        // Reset Filters Button
+        resetFiltersBtn.addEventListener('click', () => {
+            searchQuery = '';
+            searchInput.value = '';
+            currentFilter = 'ALL';
+            filterBtns.forEach((b, idx) => {
+                if (idx === 0) {
+                    b.classList.add('bg-black', 'text-white');
+                } else {
+                    b.classList.remove('bg-black', 'text-white');
+                }
+            });
+            renderTimeline();
+        });
+
+        // View Mode Toggle
+        viewTimelineBtn.addEventListener('click', () => {
+            currentView = 'timeline';
+            viewTimelineBtn.className = "px-3 py-2 text-xs font-bold font-mono uppercase bg-black text-white border border-black shadow-brutal-sm flex items-center gap-2";
+            viewGridBtn.className = "px-3 py-2 text-xs font-bold font-mono uppercase bg-white text-black hover:bg-gray-200 border border-black flex items-center gap-2";
+            document.querySelector('#timelineContainer > div:first-child').classList.remove('hidden');
+            renderTimeline();
+        });
+
+        viewGridBtn.addEventListener('click', () => {
+            currentView = 'grid';
+            viewGridBtn.className = "px-3 py-2 text-xs font-bold font-mono uppercase bg-black text-white border border-black shadow-brutal-sm flex items-center gap-2";
+            viewTimelineBtn.className = "px-3 py-2 text-xs font-bold font-mono uppercase bg-white text-black hover:bg-gray-200 border border-black flex items-center gap-2";
+            document.querySelector('#timelineContainer > div:first-child').classList.add('hidden');
+            renderTimeline();
+        });
+
+        // Upvoting / Like Handler
+        window.likeMilestone = function(id, event) {
+            if (event) event.stopPropagation();
+            const item = milestones.find(m => m.id === id);
+            if (item) {
+                item.likes += 1;
+                renderTimeline();
+                // If detail modal is open for this item, update its count too
+                if (!detailModal.classList.contains('hidden')) {
+                    document.getElementById('modalUpvoteCount').innerText = item.likes;
+                }
+            }
+        };
+
+        // Open Detail Modal
+        let activeModalItemId = null;
+        window.openDetail = function(id) {
+            const item = milestones.find(m => m.id === id);
+            if (!item) return;
+
+            activeModalItemId = id;
+            document.getElementById('modalYear').innerText = item.year;
+            document.getElementById('modalCategory').innerText = item.category;
+            document.getElementById('modalTitle').innerText = item.title;
+            document.getElementById('modalDescription').innerText = item.fullDesc || item.shortDesc;
+            document.getElementById('modalUpvoteCount').innerText = item.likes;
+
+            // Render Impact Highlights
+            const impactList = document.getElementById('modalImpactList');
+            if (item.impact && item.impact.length > 0) {
+                impactList.innerHTML = item.impact.map(imp => `<li>${imp}</li>`).join('');
+            } else {
+                impactList.innerHTML = '<li>Community milestone submission</li>';
+            }
+
+            // Image handling
+            const imgContainer = document.getElementById('modalImageContainer');
+            const imgEl = document.getElementById('modalImage');
+            if (item.image) {
+                imgEl.src = item.image;
+                imgContainer.classList.remove('hidden');
+            } else {
+                imgContainer.classList.add('hidden');
+            }
+
+            detailModal.classList.remove('hidden');
+        };
+
+        // Modal upvote listener
+        document.getElementById('modalUpvoteBtn').addEventListener('click', () => {
+            if (activeModalItemId) {
+                likeMilestone(activeModalItemId);
+            }
+        });
+
+        // Close Detail Modal
+        closeDetailModal.addEventListener('click', () => detailModal.classList.add('hidden'));
+        closeDetailModalBtn.addEventListener('click', () => detailModal.classList.add('hidden'));
+        detailModal.addEventListener('click', (e) => {
+            if (e.target === detailModal) detailModal.classList.add('hidden');
+        });
+
+        // Open/Close Add Memory Modal
+        addMemoryBtn.addEventListener('click', () => addModal.classList.remove('hidden'));
+        closeAddModal.addEventListener('click', () => addModal.classList.add('hidden'));
+        cancelAddModal.addEventListener('click', () => addModal.classList.add('hidden'));
+        addModal.addEventListener('click', (e) => {
+            if (e.target === addModal) addModal.classList.add('hidden');
+        });
+
+        // Handle Add Memory Form Submit
+        addMemoryForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const year = parseInt(document.getElementById('formYear').value);
+            const category = document.getElementById('formCategory').value;
+            const title = document.getElementById('formTitle').value;
+            const description = document.getElementById('formDescription').value;
+            const impact = document.getElementById('formImpact').value;
+
+            const categoryColors = {
+                'FOUNDING': 'bg-brutal-orange',
+                'CAMPUS': 'bg-brutal-green',
+                'PROGRAMS': 'bg-brutal-blue',
+                'SPACES': 'bg-brutal-pink'
+            };
+
+            const newItem = {
+                id: 'm_' + Date.now(),
+                year: year,
+                title: title,
+                category: category,
+                badgeBg: categoryColors[category] || 'bg-brutal-yellow',
+                shortDesc: description,
+                fullDesc: description,
+                impact: impact ? [impact] : ['Submitted by community member'],
+                likes: 1,
+                image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80'
+            };
+
+            milestones.unshift(newItem); // Add to beginning
+            milestones.sort((a, b) => a.year - b.year); // Keep chronological order
+
+            addMemoryForm.reset();
+            addModal.classList.add('hidden');
+            renderTimeline();
+        });
+
+        // Theme Palette Switcher (Fun Brutalist Feature)
+        const themes = [
+            { bg: '#FFFBF0', name: 'Default Warm' },
+            { bg: '#E3F2FD', name: 'Cyber Blue' },
+            { bg: '#F3E5F5', name: 'Neon Purple' },
+            { bg: '#E8F5E9', name: 'Mint Fresh' }
+        ];
+        let currentThemeIdx = 0;
+
+        themeToggleBtn.addEventListener('click', () => {
+            currentThemeIdx = (currentThemeIdx + 1) % themes.length;
+            document.body.style.backgroundColor = themes[currentThemeIdx].bg;
+        });
+
+        // Initial Render on Page Load
+        window.onload = function() {
+            renderTimeline();
+        };
+    </script>
+</body>
+</html>
