@@ -1105,7 +1105,7 @@ export default function Timeline() {
         </div>
       </div>
 
-      {/* ===== Footer ===== */}
+      {/* ===== Footer =====
       <div className="tl-footer">
         <div className="tl-footer-box">
           <div>
@@ -1139,7 +1139,7 @@ export default function Timeline() {
         <div className="tl-footer-credit">
           HANDCRAFTED WITH 💛 BY TINKERHUB CEKNPY // CAMPUS ARCHIVE
         </div>
-      </div>
+      </div> */}
 
       {/* ===== Detail Modal ===== */}
       {detailItem && (
