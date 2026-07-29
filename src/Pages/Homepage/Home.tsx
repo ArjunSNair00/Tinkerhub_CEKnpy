@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import Hero from "./sections/hero.tsx";
 import Workingonit from "./components/workingonit.tsx";
+import Timeline from "../../../TINKERHUBTIMELINE TREE/timeline";
 
 export default function Homepage() {
   useEffect(() => {
@@ -47,6 +48,7 @@ export default function Homepage() {
       >
         <Workingonit />
       </div>
+      <Timeline />
     </>
   );
 }
