@@ -9,6 +9,13 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./timeline.css";
 
+/* ===== TREE STYLE SWITCHES =====
+   SHOW_ROOTS  — the root cluster that spreads across the top edge
+   SHOW_LEAVES — all foliage (sprouts at card junctions, trunk leaves, root tips)
+   Both are off for a clean trunk + branches + cards look. Flip to true to restore. */
+const SHOW_ROOTS = false;
+const SHOW_LEAVES = false;
+
 /* ===== DATA ===== */
 type Milestone = {
   id: string;
@@ -245,7 +252,7 @@ function svgEl<K extends keyof SVGElementTagNameMap>(
   return node;
 }
 
-/** Catmull-Rom → cubic bezier: smooth curve passing exactly through every point. */
+/** Catmull-Rom → cubic bezier: a smooth curve passing exactly through every point. */
 function smoothPath(pts: Pt[]): string {
   if (pts.length < 2) return "";
   let d = `M ${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
@@ -277,8 +284,9 @@ type TreeParts = {
 
 /**
  * Measures real row/card positions and draws the upside-down tree in
- * pixel-accurate coordinates: roots grip the top edge, trunk grows down
- * through every node, branches reach out to each card (the "leaves").
+ * pixel-accurate coordinates so branches stay welded to their cards.
+ * Trunk hangs from the top edge, weaves down through every node, and a
+ * branch reaches out to each card.
  */
 function buildTree(
   svg: SVGSVGElement,
@@ -317,9 +325,11 @@ function buildTree(
     return p;
   });
 
-  /* ---- Spine: hangs from top edge, weaves through every node, tapers off ---- */
+  /* ---- Spine: hangs from the top edge, weaves through every node, tapers off ---- */
   const first = pts[0];
   const last = pts[pts.length - 1];
+  // To start the trunk at the first node instead of the top edge, use:
+  //   { x: first.nx, y: Math.max(0, first.ny - 46) }
   const spine: Pt[] = [{ x: first.nx, y: 0 }];
   pts.forEach((p, i) => {
     spine.push({ x: p.nx, y: p.ny });
@@ -363,38 +373,45 @@ function buildTree(
     longPaths.push(v);
   });
 
-  /* ---- Roots gripping the top edge ---- */
+  /* ---- Roots gripping the top edge (optional) ---- */
   const roots: SVGPathElement[] = [];
   const rootLeaves: SVGPathElement[] = [];
-  const sx = spine[0].x;
-  const rootDefs = [
-    { s: -1, reach: 0.34, drop: 34, w: 5 },
-    { s: 1, reach: 0.38, drop: 28, w: 5 },
-    { s: -1, reach: 0.19, drop: 52, w: 3.5 },
-    { s: 1, reach: 0.22, drop: 48, w: 3.5 },
-    { s: -1, reach: 0.47, drop: 14, w: 4 },
-    { s: 1, reach: 0.5, drop: 12, w: 4 },
-  ];
-  rootDefs.forEach((r) => {
-    const endX = Math.max(10, Math.min(W - 10, sx + r.s * r.reach * W));
-    const d = `M ${sx} 2 Q ${sx + r.s * Math.abs(endX - sx) * 0.55} ${r.drop * 0.35} ${endX} ${r.drop}`;
-    const p = svgEl("path", {
-      d,
-      class: "tl-gen-root",
-      "stroke-width": r.w,
+  if (SHOW_ROOTS) {
+    const sx = spine[0].x;
+    const rootDefs = [
+      { s: -1, reach: 0.34, drop: 34, w: 5 },
+      { s: 1, reach: 0.38, drop: 28, w: 5 },
+      { s: -1, reach: 0.19, drop: 52, w: 3.5 },
+      { s: 1, reach: 0.22, drop: 48, w: 3.5 },
+      { s: -1, reach: 0.47, drop: 14, w: 4 },
+      { s: 1, reach: 0.5, drop: 12, w: 4 },
+    ];
+    rootDefs.forEach((r) => {
+      const endX = Math.max(10, Math.min(W - 10, sx + r.s * r.reach * W));
+      const d = `M ${sx} 2 Q ${sx + r.s * Math.abs(endX - sx) * 0.55} ${r.drop * 0.35} ${endX} ${r.drop}`;
+      const p = svgEl("path", {
+        d,
+        class: "tl-gen-root",
+        "stroke-width": r.w,
+      });
+      gRoots.appendChild(p);
+      roots.push(p);
+      if (SHOW_LEAVES) {
+        const wrap = svgEl("g", {
+          transform: `translate(${endX} ${r.drop}) rotate(${r.s > 0 ? 24 : 156}) scale(0.9)`,
+        });
+        const lf = svgEl("path", {
+          d: LEAF_D,
+          class: "tl-gen-leaf tl-gen-deco",
+        });
+        wrap.appendChild(lf);
+        gLeaf.appendChild(wrap);
+        rootLeaves.push(lf);
+      }
     });
-    gRoots.appendChild(p);
-    roots.push(p);
-    const wrap = svgEl("g", {
-      transform: `translate(${endX} ${r.drop}) rotate(${r.s > 0 ? 24 : 156}) scale(0.9)`,
-    });
-    const lf = svgEl("path", { d: LEAF_D, class: "tl-gen-leaf tl-gen-deco" });
-    wrap.appendChild(lf);
-    gLeaf.appendChild(wrap);
-    rootLeaves.push(lf);
-  });
+  }
 
-  /* ---- Branches → cards, with a sprout leaf pair at every junction ---- */
+  /* ---- Branches → cards, with an optional sprout leaf pair at each junction ---- */
   const branches: SVGPathElement[] = [];
   const sprouts: SVGPathElement[][] = [];
   pts.forEach((p, i) => {
@@ -408,25 +425,30 @@ function buildTree(
     gBranch.appendChild(br);
     branches.push(br);
 
-    const sprX = edgeX - dir * 2; // just outside the card edge
-    const base = dir === 1 ? 180 : 0; // leaves point back toward the trunk
-    const mk = (ang: number, s: number) => {
-      const wrap = svgEl("g", {
-        transform: `translate(${sprX} ${attachY}) rotate(${ang}) scale(${s})`,
-      });
-      const lf = svgEl("path", {
-        d: LEAF_D,
-        class: "tl-gen-leaf tl-gen-sprout",
-      });
-      wrap.appendChild(lf);
-      gLeaf.appendChild(wrap);
-      return lf;
-    };
-    sprouts.push([mk(base - 36, 1.2), mk(base + 28, 0.9)]);
+    if (SHOW_LEAVES) {
+      const sprX = edgeX - dir * 2; // just outside the card edge
+      const base = dir === 1 ? 180 : 0; // leaves point back toward the trunk
+      const mk = (ang: number, s: number) => {
+        const wrap = svgEl("g", {
+          transform: `translate(${sprX} ${attachY}) rotate(${ang}) scale(${s})`,
+        });
+        const lf = svgEl("path", {
+          d: LEAF_D,
+          class: "tl-gen-leaf tl-gen-sprout",
+        });
+        wrap.appendChild(lf);
+        gLeaf.appendChild(wrap);
+        return lf;
+      };
+      sprouts.push([mk(base - 36, 1.2), mk(base + 28, 0.9)]);
+    } else {
+      sprouts.push([]);
+    }
   });
 
-  /* ---- Decorative foliage along the trunk between nodes ---- */
+  /* ---- Optional decorative foliage along the trunk between nodes ---- */
   const deco: SVGPathElement[][] = pts.slice(0, -1).map((p, i) => {
+    if (!SHOW_LEAVES) return [];
     const next = pts[i + 1];
     const side = i % 2 === 0 ? 1 : -1;
     return [0.36, 0.7].map((t, j) => {
@@ -546,40 +568,44 @@ export default function Timeline() {
               },
             });
 
-            /* Roots take hold as the section arrives */
-            parts.roots.forEach((p) => {
-              const len = p.getTotalLength() + 2;
-              gsap.set(p, { strokeDasharray: len, strokeDashoffset: len });
-            });
-            gsap.to(parts.roots, {
-              strokeDashoffset: 0,
-              ease: "none",
-              scrollTrigger: {
-                trigger: container,
-                start: "top 90%",
-                end: "top 42%",
-                scrub: 0.7,
-              },
-            });
-            gsap.fromTo(
-              parts.rootLeaves,
-              { scale: 0, opacity: 0 },
-              {
-                scale: 1,
-                opacity: 0.85,
-                transformOrigin: "left center",
-                ease: "back.out(2.5)",
-                stagger: 0.05,
+            /* Roots take hold as the section arrives (only if enabled) */
+            if (parts.roots.length) {
+              parts.roots.forEach((p) => {
+                const len = p.getTotalLength() + 2;
+                gsap.set(p, { strokeDasharray: len, strokeDashoffset: len });
+              });
+              gsap.to(parts.roots, {
+                strokeDashoffset: 0,
+                ease: "none",
                 scrollTrigger: {
                   trigger: container,
-                  start: "top 74%",
-                  end: "top 34%",
+                  start: "top 90%",
+                  end: "top 42%",
                   scrub: 0.7,
                 },
-              },
-            );
+              });
+            }
+            if (parts.rootLeaves.length) {
+              gsap.fromTo(
+                parts.rootLeaves,
+                { scale: 0, opacity: 0 },
+                {
+                  scale: 1,
+                  opacity: 0.85,
+                  transformOrigin: "left center",
+                  ease: "back.out(2.5)",
+                  stagger: 0.05,
+                  scrollTrigger: {
+                    trigger: container,
+                    start: "top 74%",
+                    end: "top 34%",
+                    scrub: 0.7,
+                  },
+                },
+              );
+            }
 
-            /* Per row: bud pops → branch draws → sprout → card unfurls */
+            /* Per row: bud pops → branch draws → (sprout) → card unfurls */
             const rows = container.querySelectorAll<HTMLElement>(".tl-row");
             rows.forEach((row, i) => {
               const branch = parts.branches[i];
@@ -589,12 +615,17 @@ export default function Timeline() {
 
               const len = branch.getTotalLength() + 2;
               gsap.set(branch, { strokeDasharray: len, strokeDashoffset: len });
-              gsap.set(parts.sprouts[i], {
-                scale: 0,
-                opacity: 0,
-                transformOrigin: "left center",
-              });
-              if (parts.deco[i]) {
+
+              const hasSprout = parts.sprouts[i].length > 0;
+              const hasDeco = (parts.deco[i]?.length ?? 0) > 0;
+              if (hasSprout) {
+                gsap.set(parts.sprouts[i], {
+                  scale: 0,
+                  opacity: 0,
+                  transformOrigin: "left center",
+                });
+              }
+              if (hasDeco) {
                 gsap.set(parts.deco[i], {
                   scale: 0,
                   opacity: 0,
@@ -630,7 +661,7 @@ export default function Timeline() {
                   0.02,
                 );
               }
-              if (parts.deco[i]) {
+              if (hasDeco) {
                 tl.to(
                   parts.deco[i],
                   {
@@ -644,18 +675,20 @@ export default function Timeline() {
                   0.18,
                 );
               }
-              tl.to(
-                parts.sprouts[i],
-                {
-                  scale: 1,
-                  opacity: 0.9,
-                  transformOrigin: "left center",
-                  ease: "back.out(3)",
-                  duration: 0.28,
-                  stagger: 0.06,
-                },
-                0.3,
-              );
+              if (hasSprout) {
+                tl.to(
+                  parts.sprouts[i],
+                  {
+                    scale: 1,
+                    opacity: 0.9,
+                    transformOrigin: "left center",
+                    ease: "back.out(3)",
+                    duration: 0.28,
+                    stagger: 0.06,
+                  },
+                  0.3,
+                );
+              }
               tl.fromTo(
                 card,
                 {
@@ -679,20 +712,22 @@ export default function Timeline() {
               );
             });
 
-            /* Ambient breeze on every leaf */
-            svg
-              .querySelectorAll<SVGPathElement>(".tl-gen-leaf")
-              .forEach((lf) => {
-                gsap.to(lf, {
-                  rotation: "random(-7, 7)",
-                  duration: "random(2.4, 4.2)",
-                  repeat: -1,
-                  yoyo: true,
-                  ease: "sine.inOut",
-                  delay: "random(0.2, 1.4)",
-                  transformOrigin: "left center",
+            /* Ambient breeze on foliage (only if leaves exist) */
+            if (SHOW_LEAVES) {
+              svg
+                .querySelectorAll<SVGPathElement>(".tl-gen-leaf")
+                .forEach((lf) => {
+                  gsap.to(lf, {
+                    rotation: "random(-7, 7)",
+                    duration: "random(2.4, 4.2)",
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut",
+                    delay: "random(0.2, 1.4)",
+                    transformOrigin: "left center",
+                  });
                 });
-              });
+            }
           });
         }
       } else {
@@ -1038,7 +1073,7 @@ export default function Timeline() {
       {/* ===== Timeline / Grid ===== */}
       <div className="tl-max-w" style={{ marginTop: 32 }}>
         <div ref={timelineContainerRef} className="tl-timeline-container">
-          {/* Generated upside-down tree (roots at top, trunk grows down) */}
+          {/* Generated upside-down tree (trunk grows down, branches reach cards) */}
           <svg
             ref={treeSvgRef}
             className="tl-tree-svg"
